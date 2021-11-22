@@ -60,6 +60,6 @@ app.post('/multipleFiles', upload.array('files'), (req, res, next) => {
     error.httpStatusCode = 400
     return next(error)
   }
-  res.send({ sttus: 'ok' });
+  res.send(files);
 })
 
