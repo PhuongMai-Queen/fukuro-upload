@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const multer = require('multer');
-
+const fs = require('fs');
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -63,3 +63,34 @@ app.post('/multipleFiles', upload.array('files'), (req, res, next) => {
   res.send(files);
 })
 
+app.delete('/file/delete',(req, res, next) => {
+  const filePath = 'img/'+req.body['file_name'];
+  fs.access(filePath, error => {
+    if (!error) {
+      fs.unlinkSync(filePath);
+      return next('Success');
+    } else {
+      console.log(error);
+      return next('Fail');
+    }
+  });
+})
+
+app.delete('/files/delete',(req, res, next) => {
+  const files = req.body['files_name'];
+  files.forEach(function(filePath) {
+    filePath = 'img/'+filePath;
+    fs.access(filePath, error => {
+      if (!error) {
+        fs.unlinkSync(filePath,function(error){
+          console.log(error);
+          return next('Fail');
+        });
+        return next('Success');
+      } else {
+        console.log(error);
+        return next('Fail');
+      }
+    });
+  });
+})
