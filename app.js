@@ -63,7 +63,7 @@ app.post('/multipleFiles', upload.array('files'), (req, res, next) => {
   res.send(files);
 })
 
-app.delete('/file/delete',(req, res, next) => {
+app.post('/file/delete',(req, res, next) => {
   const filePath = 'img/'+req.body['file_name'];
   fs.access(filePath, error => {
     if (!error) {
@@ -76,7 +76,7 @@ app.delete('/file/delete',(req, res, next) => {
   });
 })
 
-app.delete('/files/delete',(req, res, next) => {
+app.post('/files/delete',(req, res, next) => {
   const files = req.body['files_name'];
   files.forEach(function(filePath) {
     filePath = 'img/'+filePath;
