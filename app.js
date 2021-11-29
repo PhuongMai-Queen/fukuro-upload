@@ -63,34 +63,34 @@ app.post('/multipleFiles', upload.array('files'), (req, res, next) => {
   res.send(files);
 })
 
-app.post('/file/delete',(req, res, next) => {
+app.delete('/file/delete',(req, res, next) => {
   const filePath = 'img/'+req.body['file_name'];
-  fs.access(filePath, error => {
-    if (!error) {
-      fs.unlinkSync(filePath);
-      return next('Success');
-    } else {
-      console.log(error);
-      return next('Fail');
-    }
-  });
+  try {
+    fs.unlinkSync(filePath)
+    res.send({status: 'Success'})
+    //file removed
+  } catch(err) {
+    res.send({status: 'Fail'})
+    console.error(err)
+  }
 })
 
-app.post('/files/delete',(req, res, next) => {
+app.delete('/files/delete',(req, res, next) => {
   const files = req.body['files_name'];
+  let flag = false;
   files.forEach(function(filePath) {
     filePath = 'img/'+filePath;
-    fs.access(filePath, error => {
-      if (!error) {
-        fs.unlinkSync(filePath,function(error){
-          console.log(error);
-          return next('Fail');
-        });
-        return next('Success');
-      } else {
-        console.log(error);
-        return next('Fail');
-      }
-    });
+    try {
+      fs.unlinkSync(filePath)
+      flag = true;
+    } catch(err) {
+      flag = false;
+      console.error(err)
+    }
   });
+  if(flag == true){
+    res.send({status: 'Success'})
+  }else{
+    res.send({status: 'Fail'})
+  }
 })
