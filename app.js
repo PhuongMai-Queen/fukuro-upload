@@ -34,9 +34,9 @@ const upload = multer({ storage: storage })
 app.get("/", (req, res) => {
   res.send(
     `<h1 style='text-align: center'>
-            Wellcome to FunOfHeuristic
+            Wellcome to Fukuro Upload
             <br><br>
-            <b style="font-size: 182px;">😃👻</b>
+            <b style="font-size: 182px;">😃</b>
         </h1>`
   );
 });
